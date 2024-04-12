@@ -13,14 +13,13 @@
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
-                  <div id="unity-fullscreen-button"></div>
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
-   
+        <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">Virtual Museum</div>
       </div>
     </div>
@@ -58,11 +57,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/SEBI BUILD.loader.js";
+      var loaderUrl = buildUrl + "/SEBI-VM.loader.js";
       var config = {
-        dataUrl: buildUrl + "/SEBI BUILD.data",
-        frameworkUrl: buildUrl + "/SEBI BUILD.framework.js",
-        codeUrl: buildUrl + "/SEBI BUILD.wasm",
+        dataUrl: buildUrl + "/SEBI-VM.data",
+        frameworkUrl: buildUrl + "/SEBI-VM.framework.js",
+        codeUrl: buildUrl + "/SEBI-VM.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "FourtyFourty",
         productName: "Virtual Museum",
