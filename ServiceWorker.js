@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-WebGL Mobile Test-0.1.0";
 const contentToCache = [
-    "Build/SEBI BUILD.loader.js",
-    "Build/SEBI BUILD.framework.js.br",
-    "Build/SEBI BUILD.data.br",
-    "Build/SEBI BUILD.wasm.br",
+    "Build/SEBI-VM.loader.js",
+    "Build/SEBI-VM.framework.js",
+    "Build/SEBI-VM.data",
+    "Build/SEBI-VM.wasm",
     "TemplateData/style.css"
 
 ];
