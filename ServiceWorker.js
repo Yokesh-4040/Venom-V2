@@ -1,9 +1,9 @@
 const cacheName = "FourtyFourty-Virtual Museum-0.1";
 const contentToCache = [
     "Build/SEBI-VM.loader.js",
-    "Build/SEBI-VM.framework.js.unityweb",
-    "Build/SEBI-VM.data.unityweb",
-    "Build/SEBI-VM.wasm.unityweb",
+    "Build/SEBI-VM.framework.js",
+    "Build/SEBI-VM.data",
+    "Build/SEBI-VM.wasm",
     "TemplateData/style.css"
 
 ];
