@@ -52,6 +52,13 @@
             height: 100vh;
             background: transparent;
         }
+        #unity-logo {
+            width: 150px;
+            height: auto;
+            position: absolute;
+            bottom: 20%;
+            z-index: 100;
+        }
         #unity-loading-bar {
             width: 100%;
             position: absolute;
@@ -68,7 +75,7 @@
         #unity-progress-bar-full {
             height: 100%;
             width: 0%;
-            background-color: #4caf50;
+            background-color: #ff0000; /* Set the progress bar to red */
         }
     </style>
 </head>
@@ -91,6 +98,7 @@
 </div>
 <div id="unity-container" class="unity-mobile">
     <canvas id="unity-canvas"></canvas>
+    <img id="unity-logo" src="TemplateData/unity-logo.png" alt="Unity Logo">  <!-- Add logo above loading bar -->
     <div id="unity-loading-bar">
         <div id="unity-progress-bar-empty">
             <div id="unity-progress-bar-full"></div>
