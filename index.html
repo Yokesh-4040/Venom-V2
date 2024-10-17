@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Unity WebGL Player | WebAR-CarController</title>
     <link rel="stylesheet" href="TemplateData/style.css">
 
@@ -173,15 +173,6 @@
     window.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
-
-    // Lock screen orientation to portrait
-    if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("portrait").then(function() {
-            console.log("Screen locked to portrait mode");
-        }).catch(function(error) {
-            console.error("Screen lock failed:", error);
-        });
-    }
 
     async function StartWebcam() {
         console.log("StartWebcam");
