@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content='width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
     <title>Unity WebGL Player | WebAR-CarController</title>
     <link rel="stylesheet" href="TemplateData/style.css">
 
@@ -42,6 +42,7 @@
             height: 100vh;
             background: transparent;
             z-index: -99;
+            display: none; /* Hide the canvas until Unity starts */
         }
     </style>
 </head>
@@ -101,6 +102,9 @@
     var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
     function StartAR() {
+        // Enter Fullscreen
+        requestFullscreen();
+
         canvas.style.width = window.innerWidth + "px";
         canvas.style.height = window.innerHeight + "px";
 
@@ -123,9 +127,23 @@
             window.unityInstance = unityInstance;
             RequestWebcam();
             loadingBar.style.display = "none";
+            document.getElementById("unity-canvas").style.display = "block"; // Show canvas when Unity starts
         });
         StartMotionSensors();
         loadingBar.style.display = "block";
+    }
+
+    function requestFullscreen() {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
     }
 
     window.unityFacingMode = "environment";
@@ -156,21 +174,14 @@
         event.preventDefault();
     }, { passive: false });
 
-    // Lock the body from scrolling when keyboard is raised
-    let initialViewportHeight = window.innerHeight;
-
-    window.addEventListener('resize', function() {
-        let currentViewportHeight = window.innerHeight;
-
-        // Check if the viewport has shrunk (keyboard is likely open)
-        if (currentViewportHeight < initialViewportHeight * 0.7) {
-            document.body.style.height = currentViewportHeight + "px";
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.height = "100vh";
-            document.body.style.overflow = "hidden"; // Prevent scrolling
-        }
-    });
+    // Lock screen orientation to portrait
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("portrait").then(function() {
+            console.log("Screen locked to portrait mode");
+        }).catch(function(error) {
+            console.error("Screen lock failed:", error);
+        });
+    }
 
     async function StartWebcam() {
         console.log("StartWebcam");
