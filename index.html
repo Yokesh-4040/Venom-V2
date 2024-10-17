@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content='width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes'>
     <title>Unity WebGL Player | WebAR-CarController</title>
     <link rel="stylesheet" href="TemplateData/style.css">
 
@@ -16,12 +16,7 @@
             min-height: 100vh;
             min-height: -webkit-fill-available;
             width: 100vw;
-            overflow: hidden; /* Prevent scrolling */
-            position: fixed; /* Keep body from scrolling */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            overflow: hidden;
         }
         .ctaDiv {
             display: flex;
@@ -33,16 +28,42 @@
             right: 0;
             top: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.9); /* Slight transparency for faster fade effect */
+            background: #fffa;
             z-index: 99;
-            transition: opacity 0.5s ease-out; /* Faster fade-out transition */
+        }
+        #unity-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
         }
         #unity-canvas {
             width: 100vw;
             height: 100vh;
             background: transparent;
-            z-index: -99;
-            display: none; /* Hide the canvas until Unity starts */
+        }
+        #unity-loading-bar {
+            width: 100%;
+            position: absolute;
+            bottom: 10%;
+            height: 20px;
+            background-color: #333;
+            z-index: 99;
+        }
+        #unity-progress-bar-empty {
+            width: 100%;
+            height: 100%;
+            background-color: #ccc;
+        }
+        #unity-progress-bar-full {
+            height: 100%;
+            width: 0%;
+            background-color: #4caf50;
         }
     </style>
 </head>
@@ -66,7 +87,6 @@
 <div id="unity-container" class="unity-mobile">
     <canvas id="unity-canvas"></canvas>
     <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
             <div id="unity-progress-bar-full"></div>
         </div>
@@ -91,7 +111,7 @@
         }
 
         await LoadWebcams();
-        document.getElementById("startARButton").style.display = "block";
+        document.getElementById("startARButton").style.display = "block";  // Ensure the button is visible
     }
 
     initialize();
@@ -102,17 +122,17 @@
     var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
     function StartAR() {
-        // Enter Fullscreen
-        requestFullscreen();
+        // Hide the AR button and the access div
+        document.getElementById('startARDiv').style.display = 'none';
 
+        // Set up canvas size
         canvas.style.width = window.innerWidth + "px";
         canvas.style.height = window.innerHeight + "px";
 
-        document.getElementById('startARDiv').style.opacity = 0;  // Fade out the white screen
-        setTimeout(() => {
-            document.getElementById('startARDiv').style.display = 'none';  // Hide it after the fade-out
-        }, 500);  // Match the CSS transition time
+        // Show loading bar during Unity WebGL load
+        loadingBar.style.display = "block";
 
+        // Start loading Unity WebGL content
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/SEBI-VM.data",
             frameworkUrl: "Build/SEBI-VM.framework.js",
@@ -122,28 +142,13 @@
             productName: "WebAR-CarController",
             productVersion: "0.1",
         }, (progress) => {
-            progressBarFull.style.width = 100 * progress + "%";
+            progressBarFull.style.width = 100 * progress + "%";  // Update loading bar based on progress
         }).then((unityInstance) => {
             window.unityInstance = unityInstance;
             RequestWebcam();
-            loadingBar.style.display = "none";
-            document.getElementById("unity-canvas").style.display = "block"; // Show canvas when Unity starts
+            loadingBar.style.display = "none";  // Hide loading bar once Unity has fully loaded
         });
         StartMotionSensors();
-        loadingBar.style.display = "block";
-    }
-
-    function requestFullscreen() {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) { /* Firefox */
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE/Edge */
-            elem.msRequestFullscreen();
-        }
     }
 
     window.unityFacingMode = "environment";
@@ -169,11 +174,6 @@
         }
     }
 
-    // Prevent scrolling on touch
-    window.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-    }, { passive: false });
-
     async function StartWebcam() {
         console.log("StartWebcam");
         while (window.requestingForCameraPermission) {
@@ -186,7 +186,7 @@
                 await arCamera.startWebcam(video);
                 console.log("Webcam started successfully");
                 window.unityInstance.SendMessage('ARCamera', 'OnStartWebcamSuccess');
-            } catch (err) {
+            } catch(err) {
                 console.error("Webcam failed to start - ", err);
                 window.unityInstance.SendMessage('ARCamera', 'OnStartWebcamFail');
             }
