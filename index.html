@@ -65,6 +65,27 @@
     });
 </script>
 <script>
+    let originalBodyHeight = document.body.style.height;
+
+    window.addEventListener('resize', () => {
+        const body = document.body;
+        const html = document.documentElement;
+        const windowHeight = window.innerHeight;
+        const fullHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+        if (windowHeight < fullHeight) {
+            console.log('Keyboard is raised');
+            // When keyboard is raised, stop scrolling and lock body height to current height
+            body.style.height = `${windowHeight}px`;
+            body.style.overflow = 'hidden';
+        } else {
+            console.log('Keyboard is lowered');
+            // Reset body height and scrolling behavior
+            body.style.height = originalBodyHeight;
+            body.style.overflow = 'auto';
+        }
+    });
+
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('focus', () => {
             // Get the viewport height and calculate the target scroll position (20% from the top)
