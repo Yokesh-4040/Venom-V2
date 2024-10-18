@@ -56,12 +56,26 @@
 </head>
 <body>
 <script>
+    window.addEventListener('resize', () => {
+        if (window.innerHeight < window.outerHeight) {
+            console.log('Keyboard is raised');
+        } else {
+            console.log('Keyboard is lowered');
+        }
+    });
+</script>
+<script>
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('focus', () => {
-            // Scroll input into view if hidden by keyboard after 1 second
-            setTimeout(() => {
-            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1000);
+            // Get the viewport height and calculate the target scroll position (20% from the top)
+            const viewportHeight = window.innerHeight;
+            const targetScrollPosition = input.getBoundingClientRect().top - (viewportHeight * 0.2);
+
+            // Smooth scroll the input into view at 20% from the top
+            window.scrollBy({
+                top: targetScrollPosition,
+                behavior: 'smooth'
+            });
         });
 
         // Disable unwanted mobile keyboard features
@@ -98,6 +112,7 @@
     </div>
     <canvas id="video-canvas"></canvas>
 </div>
+
 <script src="arcamera.js" type="text/javascript"></script>
 <script src="wtracker.js" type="text/javascript"></script>
 <script src="Build/SEBI-VM.loader.js"></script>
