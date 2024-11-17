@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 
     <style>
-        html {
+        html{
             height: -webkit-fill-available;
         }
         body {
@@ -24,20 +24,6 @@
             bottom: 0;
         }
 
-        /* Add the new CSS for mobile input fields */
-        input {
-            position: fixed;
-            bottom: 0;
-            width: 0;
-            padding: 0;
-            font-size: 0;
-            outline: none;
-            border: 0 #ccc;
-            -webkit-user-select: none;
-            user-select: none;
-            display: compact;
-        }
-
         .ctaDiv {
             display: flex;
             flex-direction: column;
@@ -52,61 +38,8 @@
             z-index: 99;
         }
     </style>
-
 </head>
 <body>
-<script>
-    window.addEventListener('resize', () => {
-        if (window.innerHeight < window.outerHeight) {
-            console.log('Keyboard is raised');
-        } else {
-            console.log('Keyboard is lowered');
-        }
-    });
-</script>
-<script>
-    let originalBodyHeight = document.body.style.height;
-
-    window.addEventListener('resize', () => {
-        const body = document.body;
-        const html = document.documentElement;
-        const windowHeight = window.innerHeight;
-        const fullHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-
-        if (windowHeight < fullHeight) {
-            console.log('Keyboard is raised');
-            // When keyboard is raised, stop scrolling and lock body height to current height
-            body.style.height = `${windowHeight}px`;
-            body.style.overflow = 'hidden';
-        } else {
-            console.log('Keyboard is lowered');
-            // Reset body height and scrolling behavior
-            body.style.height = originalBodyHeight;
-            body.style.overflow = 'auto';
-        }
-    });
-
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('focus', () => {
-            // Get the viewport height and calculate the target scroll position (20% from the top)
-            const viewportHeight = window.innerHeight;
-            const targetScrollPosition = input.getBoundingClientRect().top - (viewportHeight * 0.2);
-
-            // Smooth scroll the input into view at 20% from the top
-            window.scrollBy({
-                top: targetScrollPosition,
-                behavior: 'smooth'
-            });
-        });
-
-        // Disable unwanted mobile keyboard features
-        input.setAttribute('autocomplete', 'off');
-        input.setAttribute('autocorrect', 'off');
-        input.setAttribute('autocapitalize', 'off');
-        input.setAttribute('spellcheck', 'false');
-    });
-</script>
-
 <video id="webcam-video" muted autoplay playsinline style="width:1px;position:absolute"></video>
 <canvas id="video-canvas" style="width:100%; height:100%; object-fit:cover; position:absolute"></canvas>
 <div id="startARDiv" class="ctaDiv">
@@ -133,17 +66,10 @@
     </div>
     <canvas id="video-canvas"></canvas>
 </div>
-
 <script src="arcamera.js" type="text/javascript"></script>
 <script src="wtracker.js" type="text/javascript"></script>
 <script src="Build/SEBI-VM.loader.js"></script>
 <script>
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('focus', () => {
-            // Scroll input into view if hidden by keyboard
-            input.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        });
-    });
     function shareGame() {
         if (navigator.share) {
             const shareData = {
@@ -195,8 +121,8 @@
                 frameworkUrl: "Build/SEBI-VM.framework.js",
                 codeUrl: "Build/SEBI-VM.wasm",
                 streamingAssetsUrl: "StreamingAssets",
-                companyName: "Forty Forty",
-                productName: "Venom the last dance",
+                companyName: "DefaultCompany",
+                productName: "WebAR-CarController",
                 productVersion: "0.1",
                 //webglContextAttributes: { "preserveDrawingBuffer": true },
                 // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
